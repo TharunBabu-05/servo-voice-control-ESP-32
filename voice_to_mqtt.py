@@ -76,7 +76,12 @@ def send_mqtt_command(command):
 recognizer = sr.Recognizer()
 mic = sr.Microphone()
 
-print("Say 'open' or 'close' to control the servo.")
+print("Say voice commands to control the servo:")
+print("• 'open' / 'close'")
+print("• '30 right' / '30 left'")
+print("• '90 right' / '90 left'") 
+print("• '180 right' / '180 left'")
+print("• 'dance' for dance routine")
 
 # Startup LED pulse for confirmation
 set_led('listening')
@@ -99,10 +104,39 @@ while True:
         set_led('recognized')
         text = recognizer.recognize_google(audio).lower()
         print(f"You said: {text}")
+        
+        # Basic commands
         if "open" in text:
             send_mqtt_command("open")
         elif "close" in text:
             send_mqtt_command("close")
+        
+        # 180 degree commands
+        elif "180" in text and "right" in text:
+            send_mqtt_command("180_right")
+        elif "180" in text and "left" in text:
+            send_mqtt_command("180_left")
+        
+        # 90 degree commands
+        elif "90" in text and "right" in text:
+            send_mqtt_command("90_right")
+        elif "90" in text and "left" in text:
+            send_mqtt_command("90_left")
+        
+        # 30 degree commands
+        elif "30" in text and "right" in text:
+            send_mqtt_command("30_right")
+        elif "30" in text and "left" in text:
+            send_mqtt_command("30_left")
+        
+        # Dance command
+        elif "dance" in text:
+            send_mqtt_command("dance")
+        
+        else:
+            print("Command not recognized. Try: open, close, 30/90/180 left/right, or dance")
+            set_led('error')
+            time.sleep(0.5)
     except sr.UnknownValueError:
         print("Could not understand audio")
         set_led('error')
