@@ -59,7 +59,7 @@ def set_led(color):
 import speech_recognition as sr
 import paho.mqtt.client as mqtt
 
-MQTT_BROKER = "10.136.186.56"  # Your Pi's IP
+MQTT_BROKER = "10.28.37.56"  # Your Pi's IP
 MQTT_TOPIC = "servo/control"
 
 
